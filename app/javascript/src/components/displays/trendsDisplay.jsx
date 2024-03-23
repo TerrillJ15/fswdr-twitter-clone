@@ -2,8 +2,8 @@ import React from 'react';
 
 export const TrendsDisplay = ({ trends }) => {
   return (
-    <div className="col col-xs-9 mt-2">
-      <div className="trends">
+    <div className="info-box">
+      <div className="mx-2">
         <div className="trends-twitter">
           <span>Trends</span>
           <span> · </span>

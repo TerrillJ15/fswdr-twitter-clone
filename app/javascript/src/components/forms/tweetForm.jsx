@@ -12,6 +12,8 @@ export const TweetForm = ({ onTweetSubmit }) => {
     setTweetMessage('');
   };
 
+  const remainingCharacters = 140 - tweetMessage.length;
+
   return (
     <div>
       <textarea
@@ -22,29 +24,21 @@ export const TweetForm = ({ onTweetSubmit }) => {
         value={tweetMessage}
         onChange={handleTweetChange}
       ></textarea>
-      <div className="tweet-upload mt-2">
-        <label
-          id="upload-image-btn"
-          htmlFor="image-select"
-        >
-          <strong>Upload image</strong>
-        </label>
-        <img
-          id="image-preview"
-          src=""
-          alt="image preview"
-        />
-        <input
-          type="file"
-          id="image-select"
-          name="image"
-          accept="image/*"
-        />
-        <span className="post-char-counter">140</span>
+      <div className="tweet-upload mt-2 d-flex justify-content-end align-items-center">
+        <span className="file-upload">
+          <label htmlFor="image-select">
+            <strong>Upload image</strong>
+          </label>
+          <input
+            type="file"
+            name="image"
+            accept="image/*"
+          />
+        </span>
+        <span className="mx-2">{remainingCharacters}</span>
         <button
           className="btn btn-primary"
           disabled=""
-          id="tweet-btn"
           onClick={handleTweetButtonClick}
         >
           Tweet
