@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { safeCredentials } from '../../utils/fetchHelper';
 
+/**
+ * LogInForm component handles the user login process.
+ * It maintains the state of the form fields and handles form validation and submission.
+ */
 export const LogInForm = () => {
   const navigate = useNavigate();
 
@@ -14,6 +18,11 @@ export const LogInForm = () => {
     logInError: undefined,
   });
 
+  /**
+   * Validates the login form.
+   *
+   * @returns {boolean} Returns true if the form is valid, otherwise false.
+   */
   const validateForm = () => {
     const errors = {};
 
@@ -30,20 +39,44 @@ export const LogInForm = () => {
     return Object.keys(errors).length === 0;
   };
 
+  /**
+   * Sets the value of the state.
+   * @param {string} name - The name of the state.
+   * @param {any} value - The value of the state.
+   */
   const setValue = (name, value) => {
     setData(state => ({ ...state, [name]: value }));
   };
 
+  /**
+   * Handles the change event for input fields.
+   * Updates the state with the new value of the input field.
+   *
+   * @param {Object} event - The event object.
+   */
   const handleValueChange = event => {
     const { name, value } = event.target;
     setValue(name, value);
   };
 
+  /**
+   * Handles the change event for checkbox fields.
+   * Updates the state with the new checked state of the checkbox.
+   *
+   * @param {Object} event - The event object.
+   */
   const handleCheckChange = event => {
     const { name, checked } = event.target;
     setValue(name, checked);
   };
 
+  /**
+   * Handles the form submission event.
+   * Prevents the default form submission and checks if the form is valid.
+   * If the form is valid, it initiates the session.
+   *
+   * @param {Object} event - The event object.
+   */
   const handleSubmit = async event => {
     event.preventDefault();
     if (validateForm()) {
@@ -51,6 +84,12 @@ export const LogInForm = () => {
     }
   };
 
+  /**
+   * Initiates the session by sending a POST request to the server.
+   * If the response is successful and the data indicates success, it navigates to the feed.
+   * If the response is successful but the data indicates failure, it sets an error message.
+   * If the response is not successful, it sets an error message.
+   */
   const getSession = async () => {
     setValue('isLoggingIn', true);
     let logInError = undefined;

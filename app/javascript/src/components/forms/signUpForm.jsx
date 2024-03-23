@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { safeCredentials } from '../../utils/fetchHelper';
-
+// Default values for the form fields and related variables
 const DEFAULTS = {
   username: '',
   email: '',
@@ -11,11 +11,21 @@ const DEFAULTS = {
   signUpError: undefined,
 };
 
+/**
+ * SignUpForm component handles the user registration process.
+ * It maintains the state of the form fields and handles form validation and submission.
+ */
 export const SignUpForm = () => {
+  // State for the form fields and related variables
   const [data, setData] = useState({
     ...DEFAULTS,
   });
 
+  /**
+   * Validates the form fields.
+   * Sets the error messages for the fields that are not valid.
+   * Returns true if all fields are valid, false otherwise.
+   */
   const validateForm = () => {
     const errors = {};
 
@@ -41,15 +51,34 @@ export const SignUpForm = () => {
     return Object.keys(errors).length === 0;
   };
 
+  /**
+   * Updates the state with the given name and value.
+   *
+   * @param {string} name - The name of the state variable to update.
+   * @param {any} value - The new value for the state variable.
+   */
   const setValue = (name, value) => {
     setData(state => ({ ...state, [name]: value }));
   };
 
+  /**
+   * Handles the change event for the form fields.
+   * Updates the state with the new value of the field.
+   *
+   * @param {Object} event - The event object.
+   */
   const handleValueChange = event => {
     const { name, value } = event.target;
     setValue(name, value);
   };
 
+  /**
+   * Handles the form submission event.
+   * Prevents the default form submission and checks if the form is valid.
+   * If the form is valid, it initiates the user creation process.
+   *
+   * @param {Object} event - The event object.
+   */
   const handleSubmit = async event => {
     event.preventDefault();
     if (validateForm()) {
@@ -57,6 +86,12 @@ export const SignUpForm = () => {
     }
   };
 
+  /**
+   * Initiates the user creation process by sending a POST request to the server.
+   * If the response is successful and the data indicates success, it resets the form and sets the success state.
+   * If the response is successful but the data indicates failure, it sets an error message.
+   * If the response is not successful, it sets an error message.
+   */
   const createUser = async () => {
     setValue('isSigningUp', true);
     let signUpSuccess = false;
