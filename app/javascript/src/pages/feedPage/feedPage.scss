@@ -6,19 +6,6 @@
   margin-right: 20px;
 }
 
-.profile-trends {
-  float: left;
-  max-width: 300px;
-}
-
-.user-profile-stats {
-  margin-top: 10px;
-}
-
-.user-profile-stats .col {
-  padding: 0 5px;
-}
-
 .user-profile a {
   text-decoration: none;
   color: #333;
@@ -49,22 +36,14 @@ a:hover {
   background-color: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 5px;
-  padding: 20px;
-  margin-right: 20px;
 }
 
 .trends-twitter {
   font-weight: bold;
-  margin-bottom: 10px;
 }
 
 .trends-list {
   list-style: none;
-  padding: 0;
-}
-
-.trends-list li {
-  margin-bottom: 5px;
 }
 
 a:hover {
@@ -75,7 +54,6 @@ a:hover {
   background-color: lightblue;
   border: 1px solid #ddd;
   border-radius: 5px;
-  padding: 20px;
   max-height: 160px;
 }
 
@@ -100,8 +78,6 @@ a:hover {
   background-color: #f9f9f9;
   border: 1px solid #f9f9f9;
   border-radius: 5px;
-  padding: 20px;
-  margin-top: 55px;
 }
 
 .feed-tweet-box a {

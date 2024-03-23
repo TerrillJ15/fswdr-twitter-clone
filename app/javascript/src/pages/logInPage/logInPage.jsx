@@ -1,6 +1,6 @@
 import React from 'react';
-import { LogIn } from '../../components/logIn';
-import { SignUp } from '../../components/signUp';
+import { LogInForm } from '../../components/forms/logInForm';
+import { SignUpForm } from '../../components/forms/signUpForm';
 import './logInPage.scss';
 
 export const LogInPage = () => {
@@ -32,10 +32,10 @@ export const LogInPage = () => {
         <div className="col col-12 col-md-4 offset-md-1">
           <div className="row no-gutters">
             <div className="col col-12 mb-4">
-              <LogIn />
+              <LogInForm />
             </div>
             <div className="col col-12">
-              <SignUp />
+              <SignUpForm />
             </div>
           </div>
         </div>

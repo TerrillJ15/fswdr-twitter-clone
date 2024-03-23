@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { NavBar } from '../../components/navBar';
+import { NavBar } from '../../components/app/navBar';
 import { FeedPage } from '../feedPage/feedPage';
 import { LogInPage } from '../logInPage/logInPage';
 import './home.scss';

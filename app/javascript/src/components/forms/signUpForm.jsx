@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { safeCredentials } from '../utils/fetchHelper';
+import { safeCredentials } from '../../utils/fetchHelper';
 
-export const LogIn = () => {
-  const navigate = useNavigate();
+const DEFAULTS = {
+  username: '',
+  email: '',
+  password: '',
+  errors: {},
+  isSigningUp: false,
+  signUpSuccess: false,
+  signUpError: undefined,
+};
 
+export const SignUpForm = () => {
   const [data, setData] = useState({
-    username: '',
-    password: '',
-    rememberMe: false,
-    errors: {},
-    isLoggingIn: false,
-    logInError: undefined,
+    ...DEFAULTS,
   });
 
   const validateForm = () => {
@@ -19,6 +21,15 @@ export const LogIn = () => {
 
     if (!!!data.username) {
       errors.username = 'Username is required';
+    }
+
+    if (!!!data.email) {
+      errors.email = 'Email is required';
+    } else if (
+      /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,9}$/.test(data.email) ===
+      false
+    ) {
+      errors.email = `Email is invaild: xxxxx@xxxxx.xxx`;
     }
 
     if (!!!data.password) {
@@ -39,28 +50,25 @@ export const LogIn = () => {
     setValue(name, value);
   };
 
-  const handleCheckChange = event => {
-    const { name, checked } = event.target;
-    setValue(name, checked);
-  };
-
   const handleSubmit = async event => {
     event.preventDefault();
     if (validateForm()) {
-      getSession();
+      createUser();
     }
   };
 
-  const getSession = async () => {
-    setValue('isLoggingIn', true);
-    let logInError = undefined;
+  const createUser = async () => {
+    setValue('isSigningUp', true);
+    let signUpSuccess = false;
+    let signUpError = undefined;
     const response = await fetch(
-      `api/sessions`,
+      `api/users`,
       safeCredentials({
         method: 'POST',
         body: JSON.stringify({
           user: {
             username: data.username,
+            email: data.email,
             password: data.password,
           },
         }),
@@ -68,29 +76,32 @@ export const LogIn = () => {
     );
     if (response.ok) {
       const data = await response?.json();
-      if (data?.success) {
-        // success, so go to the tweets feed
-        navigate('/feed');
+      if (data?.user) {
+        // success, so clear other values and show success
+        setData(() => ({
+          ...DEFAULTS,
+        }));
+        signUpSuccess = true;
       } else {
-        // failed, so show unable to log in message
-        logInError =
-          'The username and password does not match an account. Please try again.';
+        // failed, so show unable to sign up message
+        signUpError = 'Unable to sign up.';
       }
     } else {
-      // failed, so show unable to log in message
-      logInError =
-        'Error occurred while logging in. Please try again or contact support.';
+      // failed, so show unable to sign up message
+      signUpError =
+        'Error occurred while signing up. Please try again or contact support.';
     }
-    setValue('logInError', logInError);
-    setValue('isLoggingIn', false);
+    setValue('signUpSuccess', signUpSuccess);
+    setValue('signUpError', signUpError);
+    setValue('isSigningUp', false);
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <div className="mb-2">
         <p>
-          <strong>Existing User?</strong>
-          <span> Log In</span>
+          <strong>New to Twitter?</strong>
+          <span> Sign Up</span>
         </p>
       </div>
       <input
@@ -107,6 +118,17 @@ export const LogIn = () => {
         <p className="text-danger">{data.errors.username}</p>
       )}
       <input
+        type="text"
+        className={
+          'mb-2 form-control' + (data.errors.email ? ' is-invalid' : '')
+        }
+        placeholder="Email"
+        name="email"
+        value={data.email}
+        onChange={handleValueChange}
+      ></input>
+      {data.errors.email && <p className="text-danger">{data.errors.email}</p>}
+      <input
         type="password"
         className={
           'mb-2 form-control' + (data.errors.password ? ' is-invalid' : '')
@@ -119,28 +141,18 @@ export const LogIn = () => {
       {data.errors.password && (
         <p className="text-danger">{data.errors.password}</p>
       )}
-      <div>
-        <label>
-          <input
-            type="checkbox"
-            name="rememberMe"
-            checked={data.rememberMe}
-            onChange={handleCheckChange}
-          />
-          <span> Remember me</span>
-        </label>
-        <span className="mx-2">·</span>
-        <a href="#">Forgot password?</a>
-      </div>
       <button
         disabled={data.isLoggingIn}
-        className="mb-2 btn btn-default btn-primary"
+        className="btn btn-default btn-warning pull-right"
         value="Submit"
       >
-        Log in
+        Sign up
       </button>
-      {data.logInError !== undefined && (
-        <p className="text-danger">{data.logInError}</p>
+      {data.signUpError !== undefined && (
+        <p className="text-danger">{data.signUpError}</p>
+      )}
+      {data.signUpSuccess && (
+        <p className="text-success">User signed up! Please log in.</p>
       )}
     </form>
   );
