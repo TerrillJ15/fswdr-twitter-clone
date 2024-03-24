@@ -9,8 +9,8 @@ import './home.scss';
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
     <React.StrictMode>
-      <NavBar />
       <BrowserRouter>
+        <NavBar />
         <Routes>
           <Route
             path="/"

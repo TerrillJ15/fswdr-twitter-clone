@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 
 export const TweetFeedDisplay = ({ tweets }) => {
   const navigate = useNavigate();
-  const navigateToUser = username => {
+  const navigateToUser = (event, username) => {
+    event.preventDefault();
     navigate(`/feed/${username}`);
   };
   if (tweets && tweets.length > 0) {
@@ -18,14 +19,14 @@ export const TweetFeedDisplay = ({ tweets }) => {
               <a
                 className="tweet-profileName"
                 href="#"
-                onClick={() => navigateToUser(tweet.username)}
+                onClick={event => navigateToUser(event, tweet.username)}
               >
                 <strong>{tweet.username}</strong>
               </a>
               <a
                 className="tweet-username"
                 href="#"
-                onClick={() => navigateToUser(tweet.username)}
+                onClick={event => navigateToUser(event, tweet.username)}
               >
                 &nbsp;@{tweet.username}
               </a>

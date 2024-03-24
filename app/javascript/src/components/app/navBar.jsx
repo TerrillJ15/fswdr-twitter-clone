@@ -1,6 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const NavBar = () => {
+  const navigate = useNavigate();
+  const navigateHome = event => {
+    event.preventDefault();
+    navigate(`/`);
+  };
   return (
     <nav className="navbar navbar-default navbar-fixed-top">
       <div className="container">
@@ -8,6 +14,7 @@ export const NavBar = () => {
           <a
             className="navbar-brand"
             href="#"
+            onClick={navigateHome}
           >
             <span className="navbar-brand mb-0 h1">
               <svg
