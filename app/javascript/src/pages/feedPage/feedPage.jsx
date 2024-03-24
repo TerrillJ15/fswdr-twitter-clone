@@ -3,11 +3,19 @@ import { ProfileDisplay } from '../../components/displays/profileDisplay.jsx';
 import { TrendsDisplay } from '../../components/displays/trendsDisplay.jsx';
 import { TweetFeedDisplay } from '../../components/displays/tweetFeedDisplay.jsx';
 import { TweetForm } from '../../components/forms/tweetForm.jsx';
+import { useAuthenticatedUser } from '../../hooks/authenticateUserHook.js';
 import './feedPage.scss';
 
 export const FeedPage = () => {
+  const username = useAuthenticatedUser();
+  const [trends, setTrends] = useState();
   const [tweets, setTweets] = useState([]);
 
+  // retrieve authenticated user
+
+  // retrieve trends
+
+  // retrieve latest tweets to display on feed
   return (
     <div className="container">
       <div className="row no-gutters">
@@ -15,13 +23,7 @@ export const FeedPage = () => {
           <div className="row no-gutters">
             <div className="col-4 col-md-6 col-lg-3">
               <div className="mb-2">
-                <ProfileDisplay
-                  profileName="TO DO"
-                  userName="TO DO"
-                  tweets={0}
-                  following={0}
-                  followers={0}
-                />
+                <ProfileDisplay username={username} />
               </div>
               <div>
                 <TrendsDisplay
@@ -37,7 +39,7 @@ export const FeedPage = () => {
             </div>
             <div className="col-8 col-md-6 col-lg-6">
               <div className="mb-2">
-                <TweetForm />
+                <TweetForm username={username} />
               </div>
               <div>
                 <TweetFeedDisplay tweets={tweets} />

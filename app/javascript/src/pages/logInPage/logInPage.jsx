@@ -1,10 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LogInForm } from '../../components/forms/logInForm';
 import { SignUpForm } from '../../components/forms/signUpForm';
+import { useAuthenticatedUser } from '../../hooks/authenticateUserHook';
 import './logInPage.scss';
 
 export const LogInPage = () => {
-  return (
+  const navigate = useNavigate();
+  const [showLogin, setShowLogin] = useState(false);
+  const username = useAuthenticatedUser();
+  useEffect(() => {
+    if (username) {
+      navigate('/feed');
+    } else if (username === null) {
+      setShowLogin(true);
+    } else {
+      setShowLogin(false);
+    }
+  }, [username]);
+  return showLogin ? (
     <div className="container">
       <div className="row no-gutters">
         <div className="col col-12 col-md-4 offset-md-1">
@@ -40,6 +54,10 @@ export const LogInPage = () => {
           </div>
         </div>
       </div>
+    </div>
+  ) : (
+    <div className="d-flex justify-content-center align-items-center vh-100">
+      Loading...
     </div>
   );
 };
