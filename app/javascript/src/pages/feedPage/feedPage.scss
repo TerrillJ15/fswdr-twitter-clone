@@ -1,7 +1,13 @@
-.info-box {
+.info-box,
+.feed-tweet-box {
   background-color: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 5px;
+}
+
+.feed-tweet-box a {
+  text-decoration: none;
+  color: #333;
 }
 
 .user-profile a {
@@ -61,21 +67,4 @@ a:hover {
 
 .file-upload label:hover {
   color: blue;
-}
-
-.feed-tweet-box {
-  background-color: #f9f9f9;
-  border: 1px solid #f9f9f9;
-  border-radius: 5px;
-}
-
-.feed-tweet-box {
-  background-color: #f9f9f9;
-  border: 1px solid #f9f9f9;
-  border-radius: 5px;
-}
-
-.feed-tweet-box a {
-  text-decoration: none;
-  color: #333;
 }

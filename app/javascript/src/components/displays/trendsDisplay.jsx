@@ -1,6 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-export const TrendsDisplay = ({ trends }) => {
+/**
+ * Renders the TrendsDisplay component used to display trend links.
+ *
+ * @param {Object} props - The component props.
+ * @param {string} props.username - The username of the user.
+ */
+export const TrendsDisplay = ({ username }) => {
+  const [trends, setTrends] = useState([]);
+
+  // fetch user's followers to get amount; set to defaults for now since it is not part of project requirements
+  useEffect(() => {
+    const load = async () => {
+      if (!username) return;
+      setTrends(['#Hongkong', '#Ruby', '#foobarbaz', '#rails', '#API']);
+    };
+    load();
+  }, [username]);
   return (
     <div className="info-box">
       <div className="mx-2">

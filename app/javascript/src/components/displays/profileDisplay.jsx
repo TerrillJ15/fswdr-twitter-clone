@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { fetchUserTweets } from '../../services/tweetsService';
 
 /**
+ * Renders the profile display component.
  *
- * @param {string} username
- * @returns
+ * @param {Object} props - The component props.
+ * @param {string} props.username - The username of the profile.
  */
 export const ProfileDisplay = ({ username }) => {
   const [profileName, setProfileName] = useState('--');
@@ -22,9 +23,9 @@ export const ProfileDisplay = ({ username }) => {
       // fetch user's tweets to get amount
       const tweets = await fetchUserTweets(username);
       setTweetsAmount(tweets.length);
-      // fetch user's following to get amount
+      // fetch user's following to get amount; set to 0 for now since it is not part of project requirements
       setFollowingAmount(0);
-      // fetch user's followers to get amount
+      // fetch user's followers to get amount; set to 0 for now since it is not part of project requirements
       setFollowersAmount(0);
     };
     load();

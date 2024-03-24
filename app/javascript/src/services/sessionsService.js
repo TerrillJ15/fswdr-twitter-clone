@@ -1,9 +1,8 @@
 import { safeCredentials } from '../utils/fetchHelper';
 
 /**
- * Fetches the user data and authenticates the user.
- * If the user is authenticated, sets the username.
- * If the user is not authenticated, redirects to the home page.
+ * Fetches the authenticated user.
+ * @returns {Promise<string>} The username of the authenticated user.
  */
 export const fetchUser = async () => {
   const response = await fetch(

@@ -26,15 +26,7 @@ export const FeedPage = () => {
                 <ProfileDisplay username={username} />
               </div>
               <div>
-                <TrendsDisplay
-                  trends={[
-                    '#Hongkong',
-                    '#Ruby',
-                    '#foobarbaz',
-                    '#rails',
-                    '#API',
-                  ]}
-                />
+                <TrendsDisplay username={username} />
               </div>
             </div>
             <div className="col-8 col-md-6 col-lg-6">
@@ -42,7 +34,7 @@ export const FeedPage = () => {
                 <TweetForm username={username} />
               </div>
               <div>
-                <TweetFeedDisplay tweets={tweets} />
+                <TweetFeedDisplay username={null} />
               </div>
             </div>
           </div>

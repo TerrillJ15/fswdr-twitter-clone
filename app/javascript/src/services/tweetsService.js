@@ -1,6 +1,37 @@
 import { safeCredentials } from '../utils/fetchHelper';
 
 /**
+ * Fetches all tweets.
+ *
+ * @returns {Promise<Array>} - A promise that resolves to an array of tweets.
+ */
+export const fetchAllTweets = async () => {
+  const response = await fetch(
+    `api/tweets`,
+    safeCredentials({
+      method: 'GET',
+    }),
+  );
+  if (response.ok) {
+    const text = await response.text();
+    if (text.length) {
+      try {
+        const data = JSON.parse(text);
+        if (Array.isArray(data)) {
+          return data;
+        }
+      } catch (error) {
+        console.error('Invalid JSON:', text);
+      }
+    }
+  } else {
+    // error, so log it
+    console.log(`Unable to fetch all tweets.`);
+  }
+  return []; // none found
+};
+
+/**
  * Fetches tweets for a specific user.
  *
  * @param {string} username - The username of the user whose tweets to fetch.
