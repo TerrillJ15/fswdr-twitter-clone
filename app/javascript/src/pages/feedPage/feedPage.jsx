@@ -8,14 +8,12 @@ import './feedPage.scss';
 
 export const FeedPage = () => {
   const username = useAuthenticatedUser();
-  const [trends, setTrends] = useState();
-  const [tweets, setTweets] = useState([]);
 
-  // retrieve authenticated user
-
-  // retrieve trends
-
-  // retrieve latest tweets to display on feed
+  // track current posts while on page to pass them to the feed
+  const [postedTweets, setPostedMessages] = useState([]);
+  const onTweetPost = tweet => {
+    setPostedMessages([tweet, ...postedTweets]);
+  };
   return (
     <div className="container">
       <div className="row no-gutters">
@@ -31,10 +29,16 @@ export const FeedPage = () => {
             </div>
             <div className="col-8 col-md-6 col-lg-6">
               <div className="mb-2">
-                <TweetForm username={username} />
+                <TweetForm
+                  username={username}
+                  onTweetPost={onTweetPost}
+                />
               </div>
               <div>
-                <TweetFeedDisplay username={null} />
+                <TweetFeedDisplay
+                  username={null}
+                  postedTweets={postedTweets}
+                />
               </div>
             </div>
           </div>

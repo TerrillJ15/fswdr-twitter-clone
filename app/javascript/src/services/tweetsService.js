@@ -1,13 +1,14 @@
 import { safeCredentials } from '../utils/fetchHelper';
 
 /**
- * Fetches all tweets.
+ * Fetches tweets from the specified URL.
  *
+ * @param {string} url - The URL to fetch tweets from.
  * @returns {Promise<Array>} - A promise that resolves to an array of tweets.
  */
-export const fetchAllTweets = async () => {
+const fetchTweets = async url => {
   const response = await fetch(
-    `api/tweets`,
+    url,
     safeCredentials({
       method: 'GET',
     }),
@@ -17,18 +18,26 @@ export const fetchAllTweets = async () => {
     if (text.length) {
       try {
         const data = JSON.parse(text);
-        if (Array.isArray(data)) {
-          return data;
+        if (data && Array.isArray(data.tweets)) {
+          return data.tweets;
         }
       } catch (error) {
         console.error('Invalid JSON:', text);
       }
     }
   } else {
-    // error, so log it
-    console.log(`Unable to fetch all tweets.`);
+    console.log(`Unable to fetch tweets from: ${url}`);
   }
   return []; // none found
+};
+
+/**
+ * Fetches all tweets.
+ *
+ * @returns {Promise<Array>} - A promise that resolves to an array of tweets.
+ */
+export const fetchAllTweets = async () => {
+  return fetchTweets(`api/tweets`);
 };
 
 /**
@@ -38,27 +47,36 @@ export const fetchAllTweets = async () => {
  * @returns {Promise<Array>} - A promise that resolves to an array of tweets.
  */
 export const fetchUserTweets = async username => {
+  return fetchTweets(`api/users/${username}/tweets`);
+};
+
+/**
+ * Posts a tweet with the given message and image.
+ *
+ * @param {string} message - The message content of the tweet.
+ * @param {string} image - The image associated with the tweet.
+ * @returns {Promise<Tweet>} - A promise that resolves to a tweet object when successfully posted.
+ */
+export const postTweet = async (message, image) => {
   const response = await fetch(
-    `api/users/${username}/tweets`,
+    `api/tweets`,
     safeCredentials({
-      method: 'GET',
+      method: 'POST',
+      body: JSON.stringify({
+        message: message,
+        image: image,
+      }),
     }),
   );
   if (response.ok) {
-    const text = await response.text();
-    if (text.length) {
-      try {
-        const data = JSON.parse(text);
-        if (Array.isArray(data)) {
-          return data;
-        }
-      } catch (error) {
-        console.error('Invalid JSON:', text);
-      }
+    const data = response.json();
+    if (data) {
+      return data;
+    } else {
+      console.log(`Unable to post tweet.`);
     }
   } else {
-    // error, so log it
-    console.log(`Unable to fetch user tweets for: ${username}`);
+    console.log(`Error while posting tweet.`);
   }
-  return []; // none found
+  return undefined;
 };
