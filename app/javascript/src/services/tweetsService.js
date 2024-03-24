@@ -6,7 +6,7 @@ import { safeCredentials } from '../utils/fetchHelper';
  * @param {string} url - The URL to fetch tweets from.
  * @returns {Promise<Array>} - A promise that resolves to an array of tweets.
  */
-const fetchTweets = async url => {
+const getTweets = async url => {
   const response = await fetch(
     url,
     safeCredentials({
@@ -32,22 +32,22 @@ const fetchTweets = async url => {
 };
 
 /**
- * Fetches all tweets.
+ * Gets all tweets.
  *
  * @returns {Promise<Array>} - A promise that resolves to an array of tweets.
  */
-export const fetchAllTweets = async () => {
-  return fetchTweets(`api/tweets`);
+export const getAllTweets = async () => {
+  return getTweets(`api/tweets`);
 };
 
 /**
- * Fetches tweets for a specific user.
+ * Gets tweets for a specific user.
  *
  * @param {string} username - The username of the user whose tweets to fetch.
  * @returns {Promise<Array>} - A promise that resolves to an array of tweets.
  */
-export const fetchUserTweets = async username => {
-  return fetchTweets(`api/users/${username}/tweets`);
+export const getUserTweets = async username => {
+  return getTweets(`api/users/${username}/tweets`);
 };
 
 /**

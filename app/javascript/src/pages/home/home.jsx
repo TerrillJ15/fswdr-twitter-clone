@@ -20,6 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
             path="/feed"
             element={<FeedPage />}
           />
+          <Route
+            path="/feed/:username?"
+            element={<FeedPage />}
+          />
         </Routes>
       </BrowserRouter>
     </React.StrictMode>,

@@ -1,35 +1,44 @@
 import React, { useEffect, useState } from 'react';
-import { fetchUserTweets } from '../../services/tweetsService';
+import { getUserDetails } from '../../services/userService';
 
 /**
  * Renders the profile display component.
  *
  * @param {Object} props - The component props.
  * @param {string} props.username - The username of the profile.
+ * @param {Array<{id, username, message}>} props.tweets - The tweets that belong to the user.
  */
-export const ProfileDisplay = ({ username }) => {
+export const ProfileDisplay = ({ username, tweets }) => {
   const [profileName, setProfileName] = useState('--');
   const [handleName, setHandleName] = useState('--');
   const [tweetsAmount, setTweetsAmount] = useState('--');
   const [followingAmount, setFollowingAmount] = useState('--');
   const [followersAmount, setFollowersAmount] = useState('--');
 
-  // retrieve user's tweets, following, and followers
+  // when username updates, then load the user details
   useEffect(() => {
     const load = async () => {
       if (!username) return;
       setProfileName(username);
       setHandleName(username);
-      // fetch user's tweets to get amount
-      const tweets = await fetchUserTweets(username);
-      setTweetsAmount(tweets.length);
-      // fetch user's following to get amount; set to 0 for now since it is not part of project requirements
-      setFollowingAmount(0);
-      // fetch user's followers to get amount; set to 0 for now since it is not part of project requirements
-      setFollowersAmount(0);
+      // get the user details
+      const userDetails = await getUserDetails(username);
+      // fetch user's following to get amount
+      setFollowingAmount(userDetails.followingAmount);
+      // fetch user's followers to get amount
+      setFollowersAmount(userDetails.followersAmount);
     };
     load();
   }, [username]);
+
+  // when tweets update, then update the count
+  useEffect(() => {
+    let newAmount = '--';
+    if (Array.isArray(tweets)) {
+      newAmount = tweets.length;
+    }
+    setTweetsAmount(newAmount);
+  }, [tweets]);
 
   return (
     <div className="info-box">
