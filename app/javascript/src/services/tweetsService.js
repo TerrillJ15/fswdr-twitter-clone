@@ -81,6 +81,12 @@ export const postTweet = async (message, image) => {
   return undefined;
 };
 
+/**
+ * Deletes a tweet with the specified ID.
+ *
+ * @param {number} id - The ID of the tweet to delete.
+ * @returns {Promise<boolean>} - A promise that resolves to true if the tweet is successfully deleted, false otherwise.
+ */
 export const deleteTweet = async id => {
   const response = await fetch(
     `${window.location.origin}/api/tweets/${id}`,

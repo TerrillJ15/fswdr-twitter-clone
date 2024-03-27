@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 /**
  * Renders the TrendsDisplay component used to display trend links.
- *
- * @param {Object} props - The component props.
  */
 export const TrendsDisplay = () => {
   const [trends, setTrends] = useState([]);

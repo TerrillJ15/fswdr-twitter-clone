@@ -9,6 +9,10 @@ import { FeedPage } from '../feedPage/feedPage';
 import { LogInPage } from '../logInPage/logInPage';
 import './home.scss';
 
+/**
+ * The main component of the application.
+ * It handles user authentication and routing.
+ */
 const App = () => {
   const [user, setUser] = useState(undefined); // undefined = not loaded
   const [rememberMe, setRememberMe] = useState(false);
@@ -47,20 +51,22 @@ const App = () => {
       <React.StrictMode>
         <BrowserRouter>
           <NavBar />
-          <Routes>
-            <Route
-              path="/"
-              element={<LogInPage />}
-            />
-            <Route
-              path="/feed"
-              element={<FeedPage />}
-            />
-            <Route
-              path="/feed/:username?"
-              element={<FeedPage />}
-            />
-          </Routes>
+          <div className="background">
+            <Routes>
+              <Route
+                path="/"
+                element={<LogInPage />}
+              />
+              <Route
+                path="/feed"
+                element={<FeedPage />}
+              />
+              <Route
+                path="/feed/:username?"
+                element={<FeedPage />}
+              />
+            </Routes>
+          </div>
         </BrowserRouter>
       </React.StrictMode>
     </AppContext.Provider>

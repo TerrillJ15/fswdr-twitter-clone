@@ -1,15 +1,33 @@
 import React, { useState } from 'react';
 import { postTweet } from '../../services/tweetsService';
 
+/**
+ * A form component for creating a new tweet.
+ *
+ * @param {Object} props - The component props.
+ * @param {string} props.username - The username of the logged-in user.
+ * @param {Function} props.onTweetPost - A callback function to handle the tweet post event.
+ */
 export const TweetForm = ({ username, onTweetPost }) => {
   const [message, setMessage] = useState('');
   const [image, setImage] = useState(undefined);
   const [errors, setErrors] = useState({});
 
+  /**
+   * Handles the change event for the tweet input field
+   * to set the message state.
+   *
+   * @param {Object} event - The event object.
+   */
   const handleTweetChange = event => {
     setMessage(event.target.value);
   };
 
+  /**
+   * Validates the form input and returns true if the form is valid, false otherwise.
+   *
+   * @returns {boolean} True if the form is valid, false otherwise.
+   */
   const validateForm = () => {
     const errors = {};
 
@@ -24,6 +42,14 @@ export const TweetForm = ({ username, onTweetPost }) => {
     return Object.keys(errors).length === 0;
   };
 
+  /**
+   * Submits a tweet by validating the form inputs and posting the tweet.
+   * If the tweet is successfully posted, it alerts the parent component of success,
+   * resets the tweet values, and returns the saved post.
+   * If there is an error posting the tweet, it shows an error message.
+   *
+   * @returns {Promise<void>} A promise that resolves when the tweet is submitted.
+   */
   const submitTweet = async () => {
     if (!username) {
       setErrors({ errorMessage: 'You must be logged in to post.' });
@@ -44,6 +70,9 @@ export const TweetForm = ({ username, onTweetPost }) => {
     }
   };
 
+  /**
+   * Represents the number of remaining characters in a tweet message.
+   */
   const remainingCharacters = 140 - message.length;
 
   return (

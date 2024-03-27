@@ -11,10 +11,18 @@ import { useNavigate } from 'react-router-dom';
  */
 export const TweetFeedDisplay = ({ tweets, username, onDelete }) => {
   const navigate = useNavigate();
+
+  /**
+   * Navigates to the user's feed.
+   *
+   * @param {Event} event - The event object.
+   * @param {string} username - The username of the user.
+   */
   const navigateToUser = (event, username) => {
     event.preventDefault();
     navigate(`/feed/${username}`);
   };
+
   if (tweets && tweets.length > 0) {
     return (
       <div>

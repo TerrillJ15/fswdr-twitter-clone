@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { safeCredentials } from '../../utils/fetchHelper';
+
 // Default values for the form fields and related variables
 const DEFAULTS = {
   username: '',
@@ -94,40 +94,16 @@ export const SignUpForm = () => {
    */
   const createUser = async () => {
     setValue('isSigningUp', true);
-    let signUpSuccess = false;
-    let signUpError = undefined;
-    const response = await fetch(
-      `api/users`,
-      safeCredentials({
-        method: 'POST',
-        body: JSON.stringify({
-          user: {
-            username: data.username,
-            email: data.email,
-            password: data.password,
-          },
-        }),
-      }),
-    );
-    if (response.ok) {
-      const data = await response?.json();
-      if (data?.user) {
-        // success, so clear other values and show success
-        setData(() => ({
-          ...DEFAULTS,
-        }));
-        signUpSuccess = true;
-      } else {
-        // failed, so show unable to sign up message
-        signUpError = 'Unable to sign up.';
-      }
-    } else {
-      // failed, so show unable to sign up message
-      signUpError =
-        'Error occurred while signing up. Please try again or contact support.';
+    const result = await createUser(data);
+    let signUpSuccess = !!result.user;
+    if (signUpSuccess) {
+      // success, so clear other values and show success
+      setData(() => ({
+        ...DEFAULTS,
+      }));
     }
     setValue('signUpSuccess', signUpSuccess);
-    setValue('signUpError', signUpError);
+    setValue('signUpError', result.error);
     setValue('isSigningUp', false);
   };
 

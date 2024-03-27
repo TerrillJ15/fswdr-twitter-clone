@@ -12,6 +12,9 @@ import {
 } from '../../services/tweetsService.js';
 import './feedPage.scss';
 
+/**
+ * Renders the feed page component.
+ */
 export const FeedPage = () => {
   const navigate = useNavigate();
   const { user } = useContext(AppContext);
@@ -36,7 +39,7 @@ export const FeedPage = () => {
       // validate user
       if (user === undefined) return; // not authenticated
       if (user === null) {
-        navigate('/'); // redirect to home page if user is not authenticated
+        navigate('/'); // redirect to login page if user is not authenticated
         return;
       }
 
@@ -54,10 +57,20 @@ export const FeedPage = () => {
     load();
   }, [user, username]);
 
+  /**
+   * Handles the event when a new tweet is posted.
+   *
+   * @param {Object} newTweet - The new tweet object to be added to the tweets array.
+   */
   const onTweetPost = newTweet => {
     setTweets([...tweets, newTweet]);
   };
 
+  /**
+   * Deletes a tweet with the specified ID.
+   * @param {number} id - The ID of the tweet to delete.
+   * @returns {Promise<void>} - A promise that resolves when the tweet is deleted.
+   */
   const onDelete = async id => {
     const result = await deleteTweet(id);
     if (result) {
@@ -65,51 +78,39 @@ export const FeedPage = () => {
     }
   };
   return (
-    <div
-      className="body"
-      style={{
-        backgroundImage:
-          "url('https://abs.twimg.com/images/themes/theme1/bg.png')",
-        backgroundRepeat: 'no-repeat',
-        backgroundAttachment: 'fixed',
-        backgroundSize: 'cover',
-        minHeight: '100vh',
-      }}
-    >
-      <div className="container">
-        <div className="row no-gutters">
-          <div className="col-12 col-md-10 offset-md-1 col-lg-10 offset-lg-1">
-            <div className="row no-gutters">
-              <div className="col-4 col-md-6 col-lg-3">
-                <div className="mb-2">
-                  {username && (
-                    <ProfileDisplay
-                      username={username}
-                      tweets={tweets}
-                    />
-                  )}
-                  {!username && <h2>Main Feed</h2>}
-                </div>
-                <div>
-                  <TrendsDisplay />
-                </div>
-              </div>
-              <div className="col-8 col-md-6 col-lg-6">
-                <div className="mb-2">
-                  {(!username || username === user) && (
-                    <TweetForm
-                      username={user}
-                      onTweetPost={onTweetPost}
-                    />
-                  )}
-                </div>
-                <div>
-                  <TweetFeedDisplay
-                    username={user}
+    <div className="container">
+      <div className="row no-gutters">
+        <div className="col-12 col-md-10 offset-md-1 col-lg-10 offset-lg-1">
+          <div className="row no-gutters">
+            <div className="col-4 col-md-6 col-lg-3">
+              <div className="mb-2">
+                {username && (
+                  <ProfileDisplay
+                    username={username}
                     tweets={tweets}
-                    onDelete={onDelete}
                   />
-                </div>
+                )}
+                {!username && <h2>Main Feed</h2>}
+              </div>
+              <div>
+                <TrendsDisplay />
+              </div>
+            </div>
+            <div className="col-8 col-md-6 col-lg-6">
+              <div className="mb-2">
+                {(!username || username === user) && (
+                  <TweetForm
+                    username={user}
+                    onTweetPost={onTweetPost}
+                  />
+                )}
+              </div>
+              <div>
+                <TweetFeedDisplay
+                  username={user}
+                  tweets={tweets}
+                  onDelete={onDelete}
+                />
               </div>
             </div>
           </div>

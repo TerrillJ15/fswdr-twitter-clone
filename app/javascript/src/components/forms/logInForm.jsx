@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../../contexts/appContext';
-import { safeCredentials } from '../../utils/fetchHelper';
+import { logIn } from '../../services/sessionsService';
 
 /**
  * LogInForm component handles the user login process.
@@ -92,36 +92,13 @@ export const LogInForm = () => {
    */
   const getSession = async () => {
     setValue('isLoggingIn', true);
-    let logInError = undefined;
-    const response = await fetch(
-      `api/sessions`,
-      safeCredentials({
-        method: 'POST',
-        body: JSON.stringify({
-          user: {
-            username: data.username,
-            password: data.password,
-          },
-        }),
-      }),
-    );
-    if (response.ok) {
-      const responseData = await response.json();
-      if (responseData && responseData.success) {
-        // success, so go to the tweets feed
-        setRememberMe(data.rememberMe);
-        setUser(data.username);
-      } else {
-        // failed, so show unable to log in message
-        logInError =
-          'The username and password does not match an account. Please try again.';
-      }
-    } else {
-      // failed, so show unable to log in message
-      logInError =
-        'Error occurred while logging in. Please try again or contact support.';
+    const result = await logIn(data);
+    if (result.success) {
+      // success, so go to the tweets feed for the user
+      setRememberMe(data.rememberMe);
+      setUser(data.username);
     }
-    setValue('logInError', logInError);
+    setValue('logInError', result.error);
     setValue('isLoggingIn', false);
   };
 
