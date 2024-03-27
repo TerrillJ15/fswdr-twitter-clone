@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { UserContext } from '../../contexts/userContext';
 import { safeCredentials } from '../../utils/fetchHelper';
 
 /**
@@ -7,7 +7,7 @@ import { safeCredentials } from '../../utils/fetchHelper';
  * It maintains the state of the form fields and handles form validation and submission.
  */
 export const LogInForm = () => {
-  const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
 
   const [data, setData] = useState({
     username: '',
@@ -106,10 +106,10 @@ export const LogInForm = () => {
       }),
     );
     if (response.ok) {
-      const data = await response?.json();
-      if (data?.success) {
+      const responseData = await response.json();
+      if (responseData && responseData.success) {
         // success, so go to the tweets feed
-        navigate('/feed');
+        setUser(data.username);
       } else {
         // failed, so show unable to log in message
         logInError =

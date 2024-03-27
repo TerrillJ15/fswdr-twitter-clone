@@ -47,40 +47,48 @@ export const TweetForm = ({ username, onTweetPost }) => {
   const remainingCharacters = 140 - message.length;
 
   return (
-    <div>
-      <textarea
-        type="text"
-        className={`form-control post-input ${
-          errors.message ? 'is-invalid' : ''
-        }`}
-        rows="3"
-        placeholder="What's happening?"
-        value={message}
-        onChange={handleTweetChange}
-      ></textarea>
-      {errors.message && <p className="text-danger">{errors.message}</p>}
-      <div className="tweet-upload mt-2 d-flex justify-content-end align-items-center">
-        <span className="file-upload">
-          <label htmlFor="image-select">
-            <strong>Upload image</strong>
-          </label>
-          <input
-            type="file"
-            name="image"
-            accept="image/*"
-          />
-        </span>
-        <span className="mx-2">{remainingCharacters}</span>
-        <button
-          className="btn btn-primary"
-          onClick={submitTweet}
-        >
-          Tweet
-        </button>
+    <div
+      className="p-2 mt-2"
+      style={{
+        backgroundColor: '#daedf4',
+        borderRadius: '5px',
+      }}
+    >
+      <div>
+        <textarea
+          type="text"
+          className={`form-control post-input ${
+            errors.message ? 'is-invalid' : ''
+          }`}
+          rows="3"
+          placeholder="What's happening?"
+          value={message}
+          onChange={handleTweetChange}
+        ></textarea>
+        {errors.message && <p className="text-danger">{errors.message}</p>}
+        <div className="tweet-upload mt-2 d-flex justify-content-end align-items-center">
+          <span className="file-upload">
+            <label htmlFor="image-select">
+              <strong>Upload image</strong>
+            </label>
+            <input
+              type="file"
+              name="image"
+              accept="image/*"
+            />
+          </span>
+          <span className="mx-2">{remainingCharacters}</span>
+          <button
+            className="btn btn-primary"
+            onClick={submitTweet}
+          >
+            Tweet
+          </button>
+        </div>
+        {errors.errorMessage && (
+          <p className="text-danger text-center">{errors.errorMessage}</p>
+        )}
       </div>
-      {errors.errorMessage && (
-        <p className="text-danger text-center">{errors.errorMessage}</p>
-      )}
     </div>
   );
 };

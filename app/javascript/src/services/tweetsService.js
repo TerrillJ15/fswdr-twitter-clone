@@ -8,7 +8,7 @@ import { safeCredentials } from '../utils/fetchHelper';
  */
 const getTweets = async url => {
   const response = await fetch(
-    url,
+    `${window.location.origin}/api/${url}`,
     safeCredentials({
       method: 'GET',
     }),
@@ -37,7 +37,7 @@ const getTweets = async url => {
  * @returns {Promise<Array>} - A promise that resolves to an array of tweets.
  */
 export const getAllTweets = async () => {
-  return getTweets(`api/tweets`);
+  return getTweets(`tweets`);
 };
 
 /**
@@ -47,7 +47,7 @@ export const getAllTweets = async () => {
  * @returns {Promise<Array>} - A promise that resolves to an array of tweets.
  */
 export const getUserTweets = async username => {
-  return getTweets(`api/users/${username}/tweets`);
+  return getTweets(`users/${username}/tweets`);
 };
 
 /**
@@ -59,7 +59,7 @@ export const getUserTweets = async username => {
  */
 export const postTweet = async (message, image) => {
   const response = await fetch(
-    `api/tweets`,
+    `${window.location.origin}/api/tweets`,
     safeCredentials({
       method: 'POST',
       body: JSON.stringify({
@@ -69,7 +69,7 @@ export const postTweet = async (message, image) => {
     }),
   );
   if (response.ok) {
-    const data = response.json();
+    const data = await response.json();
     if (data) {
       return data;
     } else {
@@ -79,4 +79,24 @@ export const postTweet = async (message, image) => {
     console.log(`Error while posting tweet.`);
   }
   return undefined;
+};
+
+export const deleteTweet = async id => {
+  const response = await fetch(
+    `${window.location.origin}/api/tweets/${id}`,
+    safeCredentials({
+      method: 'DELETE',
+    }),
+  );
+  if (response.ok) {
+    const data = await response.json();
+    if (data.success) {
+      return true;
+    } else {
+      console.log(`Unable to delete tweet.`);
+    }
+  } else {
+    console.log(`Error while deleting tweet.`);
+  }
+  return false;
 };

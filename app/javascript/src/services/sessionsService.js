@@ -1,12 +1,12 @@
 import { safeCredentials } from '../utils/fetchHelper';
 
 /**
- * Fetches the authenticated user.
+ * Gets the authenticated user.
  * @returns {Promise<string>} The username of the authenticated user.
  */
-export const fetchUser = async () => {
+export const getUser = async () => {
   const response = await fetch(
-    `api/authenticated`,
+    `${window.location.origin}/api/authenticated`,
     safeCredentials({
       method: 'GET',
     }),
@@ -23,5 +23,23 @@ export const fetchUser = async () => {
   } else {
     // error, so show unable to log in message
     console.log('Unable to authenticate user. Please try logging in again.');
+  }
+};
+
+/**
+ * Logouts the current user.
+ */
+export const logoutUser = async () => {
+  const response = await fetch(
+    `${window.location.origin}/api/sessions`,
+    safeCredentials({
+      method: 'DELETE',
+    }),
+  );
+  if (response.ok) {
+    const data = await response.json();
+    return data && data.success;
+  } else {
+    console.log('Unable to logout user. Please try again.');
   }
 };

@@ -41,7 +41,7 @@ export const ProfileDisplay = ({ username, tweets }) => {
   }, [tweets]);
 
   return (
-    <div className="info-box">
+    <div className="info-box mt-2">
       <div className="mx-2">
         <div className="user-profile">
           <a href="#">
