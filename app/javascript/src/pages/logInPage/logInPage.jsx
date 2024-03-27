@@ -2,12 +2,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LogInForm } from '../../components/forms/logInForm';
 import { SignUpForm } from '../../components/forms/signUpForm';
-import { UserContext } from '../../contexts/userContext';
+import { AppContext } from '../../contexts/appContext';
 import './logInPage.scss';
 
 export const LogInPage = () => {
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
+  const { user } = useContext(AppContext);
   const [showLogin, setShowLogin] = useState(false);
   useEffect(() => {
     if (user) {

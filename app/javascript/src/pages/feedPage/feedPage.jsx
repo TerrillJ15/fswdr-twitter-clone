@@ -4,7 +4,7 @@ import { ProfileDisplay } from '../../components/displays/profileDisplay.jsx';
 import { TrendsDisplay } from '../../components/displays/trendsDisplay.jsx';
 import { TweetFeedDisplay } from '../../components/displays/tweetFeedDisplay.jsx';
 import { TweetForm } from '../../components/forms/tweetForm.jsx';
-import { UserContext } from '../../contexts/userContext.js';
+import { AppContext } from '../../contexts/appContext.js';
 import {
   deleteTweet,
   getAllTweets,
@@ -14,7 +14,7 @@ import './feedPage.scss';
 
 export const FeedPage = () => {
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
+  const { user } = useContext(AppContext);
   const { username } = useParams();
   const [tweets, setTweetsState] = useState(undefined);
 

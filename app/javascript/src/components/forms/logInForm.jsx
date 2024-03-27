@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { UserContext } from '../../contexts/userContext';
+import { AppContext } from '../../contexts/appContext';
 import { safeCredentials } from '../../utils/fetchHelper';
 
 /**
@@ -7,7 +7,7 @@ import { safeCredentials } from '../../utils/fetchHelper';
  * It maintains the state of the form fields and handles form validation and submission.
  */
 export const LogInForm = () => {
-  const { setUser } = useContext(UserContext);
+  const { setUser, setRememberMe } = useContext(AppContext);
 
   const [data, setData] = useState({
     username: '',
@@ -109,6 +109,7 @@ export const LogInForm = () => {
       const responseData = await response.json();
       if (responseData && responseData.success) {
         // success, so go to the tweets feed
+        setRememberMe(data.rememberMe);
         setUser(data.username);
       } else {
         // failed, so show unable to log in message
