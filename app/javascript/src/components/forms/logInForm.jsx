@@ -1,0 +1,164 @@
+import React, { useContext, useState } from 'react';
+import { AppContext } from '../../contexts/appContext';
+import { logIn } from '../../services/sessionsService';
+
+/**
+ * LogInForm component handles the user login process.
+ * It maintains the state of the form fields and handles form validation and submission.
+ */
+export const LogInForm = () => {
+  const { setUser, setRememberMe } = useContext(AppContext);
+
+  const [data, setData] = useState({
+    username: '',
+    password: '',
+    rememberMe: false,
+    errors: {},
+    isLoggingIn: false,
+    logInError: undefined,
+  });
+
+  /**
+   * Validates the login form.
+   *
+   * @returns {boolean} Returns true if the form is valid, otherwise false.
+   */
+  const validateForm = () => {
+    const errors = {};
+
+    if (!!!data.username) {
+      errors.username = 'Username is required';
+    }
+
+    if (!!!data.password) {
+      errors.password = 'Password is required';
+    }
+
+    setValue('errors', errors);
+
+    return Object.keys(errors).length === 0;
+  };
+
+  /**
+   * Sets the value of the state.
+   * @param {string} name - The name of the state.
+   * @param {any} value - The value of the state.
+   */
+  const setValue = (name, value) => {
+    setData(state => ({ ...state, [name]: value }));
+  };
+
+  /**
+   * Handles the change event for input fields.
+   * Updates the state with the new value of the input field.
+   *
+   * @param {Object} event - The event object.
+   */
+  const handleValueChange = event => {
+    const { name, value } = event.target;
+    setValue(name, value);
+  };
+
+  /**
+   * Handles the change event for checkbox fields.
+   * Updates the state with the new checked state of the checkbox.
+   *
+   * @param {Object} event - The event object.
+   */
+  const handleCheckChange = event => {
+    const { name, checked } = event.target;
+    setValue(name, checked);
+  };
+
+  /**
+   * Handles the form submission event.
+   * Prevents the default form submission and checks if the form is valid.
+   * If the form is valid, it initiates the session.
+   *
+   * @param {Object} event - The event object.
+   */
+  const handleSubmit = async event => {
+    event.preventDefault();
+    if (validateForm()) {
+      getSession();
+    }
+  };
+
+  /**
+   * Initiates the session by sending a POST request to the server.
+   * If the response is successful and the data indicates success, it navigates to the feed.
+   * If the response is successful but the data indicates failure, it sets an error message.
+   * If the response is not successful, it sets an error message.
+   */
+  const getSession = async () => {
+    setValue('isLoggingIn', true);
+    const result = await logIn(data);
+    if (result.success) {
+      // success, so go to the tweets feed for the user
+      setRememberMe(data.rememberMe);
+      setUser(data.username);
+    }
+    setValue('logInError', result.error);
+    setValue('isLoggingIn', false);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="mb-2">
+        <p>
+          <strong>Existing User?</strong>
+          <span> Log In</span>
+        </p>
+      </div>
+      <input
+        type="text"
+        className={
+          'mb-2 form-control' + (data.errors.username ? ' is-invalid' : '')
+        }
+        placeholder="Username"
+        name="username"
+        value={data.username}
+        onChange={handleValueChange}
+      ></input>
+      {data.errors.username && (
+        <p className="text-danger">{data.errors.username}</p>
+      )}
+      <input
+        type="password"
+        className={
+          'mb-2 form-control' + (data.errors.password ? ' is-invalid' : '')
+        }
+        placeholder="Password"
+        name="password"
+        value={data.password}
+        onChange={handleValueChange}
+      ></input>
+      {data.errors.password && (
+        <p className="text-danger">{data.errors.password}</p>
+      )}
+      <div>
+        <label>
+          <input
+            type="checkbox"
+            name="rememberMe"
+            checked={data.rememberMe}
+            onChange={handleCheckChange}
+          />
+          <span> Remember me</span>
+        </label>
+        <span className="mx-2">·</span>
+        <a href="#">Forgot password?</a>
+      </div>
+      <button
+        disabled={data.isLoggingIn}
+        className="mb-2 btn btn-default btn-primary"
+        value="Submit"
+      >
+        Log in
+      </button>
+      {data.logInError !== undefined && (
+        <p className="text-danger">{data.logInError}</p>
+      )}
+    </form>
+  );
+};
