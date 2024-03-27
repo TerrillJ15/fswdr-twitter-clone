@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createUser } from '../../services/userService';
 
 // Default values for the form fields and related variables
 const DEFAULTS = {
@@ -75,14 +76,14 @@ export const SignUpForm = () => {
   /**
    * Handles the form submission event.
    * Prevents the default form submission and checks if the form is valid.
-   * If the form is valid, it initiates the user creation process.
+   * If the form is valid, it initiates the user creation process to sign up.
    *
    * @param {Object} event - The event object.
    */
   const handleSubmit = async event => {
     event.preventDefault();
     if (validateForm()) {
-      createUser();
+      signUp();
     }
   };
 
@@ -92,7 +93,7 @@ export const SignUpForm = () => {
    * If the response is successful but the data indicates failure, it sets an error message.
    * If the response is not successful, it sets an error message.
    */
-  const createUser = async () => {
+  const signUp = async () => {
     setValue('isSigningUp', true);
     const result = await createUser(data);
     let signUpSuccess = !!result.user;
